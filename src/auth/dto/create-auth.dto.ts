@@ -5,6 +5,8 @@ export class CreateAuthDto {
    @ApiProperty()
    firstName:string
    @ApiProperty()
+   agentid:string
+   @ApiProperty()
    lastName:string
    @ApiProperty()
    companyName:string

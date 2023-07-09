@@ -17,7 +17,7 @@ export class Auth {
      const data = `${timestamp}-${secretKey}`;
      const hash = crypto.createHash('sha256').update(data).digest('hex');
      const randomNumber = parseInt(hash, 16) % (maxValue - 1) + 1; // Subtract 1 from maxValue and add 1 to the random number
-     this.agentid = `FFT${randomNumber.toString().padStart(4, '0')}`;
+     this.agentid = `FFA${randomNumber.toString().padStart(4, '0')}`;
    }
    @Column({type: "varchar"})
    firstName:string
@@ -32,6 +32,8 @@ export class Auth {
    @Column({type: "varchar"})
    password:string
    @Column({type: "varchar"})
+   walletbalance:number
+   @Column({type: "varchar"})
    tinFile:string
    @Column({type: "varchar"})
    access_token:string
@@ -39,4 +41,12 @@ export class Auth {
    created_At: Date;
    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
    updated_At: Date;
+   @Column()
+   ipAddress: string;
+   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+   loginTime: Date;
+   @Column()
+   browserName: string;
+   @Column()
+   activeStatus: boolean;
 }

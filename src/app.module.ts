@@ -6,6 +6,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { Auth } from './auth/entities/auth.entity';
+import { DepositrequestModule } from './depositrequest/depositrequest.module';
+import { Bankdeposit } from './depositrequest/entities/bankdeposit.entity';
+
 
 @Module({
   imports: [
@@ -23,11 +26,14 @@ import { Auth } from './auth/entities/auth.entity';
       database:'flyfartrips_b2b',
       
       port:3306,
-      entities: [Auth
+      entities:[
+        Auth,
+        Bankdeposit
       ],
-      synchronize:false,
+      synchronize:true,
     }),
     AuthModule,
+    DepositrequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

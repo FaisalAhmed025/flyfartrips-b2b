@@ -1,34 +1,35 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UploadedFiles } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(Auth) private authrepository: Repository<Auth>,
+  constructor(@InjectRepository(Auth) private agentpository: Repository<Auth>,
   private readonly jwtService:JwtService){}
-
-
   // Register user
-  async Register(authDto:CreateAuthDto){
+  async Register(
+    authDto:CreateAuthDto){
     const hashedPassword= await bcrypt.hash(authDto.password, 10)
-    const newuser= await this.authrepository.create({...authDto, password: hashedPassword});
-    await this.authrepository.save(newuser);
+    const newuser= await this.agentpository.create({...authDto, password: hashedPassword});
+    await this.agentpository.save(newuser);
     await this.sendRegisterSuccecess(authDto)
     return this.generateToken(newuser)
  }
   
  // generate token 
  async generateToken(authDto: CreateAuthDto): Promise<string> {
-    const payload = { email: authDto.email };
-    const token = await this.jwtService.signAsync(payload)
+    const payload = { email: authDto.email, agentid: authDto.agentid};
+    const token =  await this.jwtService.signAsync(payload)
     authDto.access_token = token;
-    await this.authrepository.save(authDto);
+    await this.agentpository.save(authDto);
     return token;
   }
 
@@ -45,11 +46,28 @@ export class AuthService {
     });
   
 
+    var currentDate = new Date();
+
+    // Get the day, month, and year components
+        var day = currentDate.getDate();
+        var month = currentDate.toLocaleString('default', { month: 'long' });
+        var year = currentDate.getFullYear();
+    
+        var hours = currentDate.getHours();
+        var minutes = currentDate.getMinutes();
+        // Determine if it's AM or PM
+        var amOrPm = hours >= 12 ? 'PM' : 'AM';
+    
+        // Convert to 12-hour format
+        hours = hours % 12;
+        hours = hours ? hours : 12; // Handle midnight (0 hours)
+    
+        var formattedDate = month + ' ' + day + ', ' + year + ' ' + hours + ':' + minutes  + ' ' + amOrPm;
     // Compose the email message
     const mailOptions = {
       from: 'flyfarladies@mailservice.center', // Replace with your email address
       to:authdto.email, // Recipient's email address
-      subject: 'Welcome To Fly Far Ladies',
+      subject: 'Welcome To Fly Far Trips',
       text: 'Congrats! your Registration has been Completed ',
       html: `<!DOCTYPE html>
       <html lang="en">
@@ -97,7 +115,7 @@ export class AuthService {
                       letter-spacing: 5px;
                     "
                   >
-                    Welcome to Fly Far ladies
+                    Welcome to Fly Far Trips
                   </td>
                 </tr>
               </table>
@@ -147,7 +165,7 @@ export class AuthService {
                       padding: 0px 40px 20px 55px;
                     "
                   >
-                    ${authdto.created_At}
+                    ${formattedDate}
                   </td>
                 </tr>
               </table>
@@ -179,7 +197,7 @@ export class AuthService {
                       padding: 10px 20px 5px 20px;
                     "
                   >
-                    User Details
+                    Agent Details
                   </td>
                 </tr>
                 <tr style="border-bottom: 1px solid #dfdfdf">
@@ -263,7 +281,7 @@ export class AuthService {
                       width: 180px;
                     "
                   >
-                    Password
+                    password
                   </td>
                   <td
                     valign="top"
@@ -281,6 +299,39 @@ export class AuthService {
                   ${authdto.password}
                   </td>
                 </tr>
+                <tr style="border-bottom: 1px solid #dfdfdf">
+                <td
+                  valign="top"
+                  style="
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                    color: #767676;
+                    font-family: sans-serif;
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 38px;
+                    padding: 5px 20px;
+                    width: 180px;
+                  "
+                >
+                  Company Address
+                </td>
+                <td
+                  valign="top"
+                  style="
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                    color: #767676;
+                    font-family: sans-serif;
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 38px;
+                    padding: 5px 20px;
+                  "
+                >
+                ${authdto.companyAddress}
+                </td>
+              </tr>
               </table>
       
               <table
@@ -331,7 +382,7 @@ export class AuthService {
                   >
                     Mail us at
                     <span style="color: #ffffff !important; text-decoration: none"
-                      >support@flyfarladies.com</span
+                      >support@flyfartrips.com</span
                     >
                     or Call us at 09606912912
                   </td>
@@ -464,7 +515,7 @@ export class AuthService {
 
  // login user
  async login(email: string, password:string): Promise<string> {
- const user = await this.authrepository.findOne({ where:{email} });
+ const user = await this.agentpository.findOne({ where:{email} });
  if (!user) {
     throw new HttpException("User does not exists", HttpStatus.BAD_REQUEST,);
  }
@@ -476,21 +527,24 @@ export class AuthService {
  
 }
 
- // verified token
- async verifyToken(access_token?: string): Promise<Auth> {
+ 
+
+ //verified token
+ async verifyToken(access_token?: string): Promise<any> {
     if (!access_token) {
        throw new HttpException('JWT token is required', HttpStatus.BAD_REQUEST);
      }
-    const user = await this.authrepository.findOne({ where:{access_token}});
-    if (!user) {
-       throw new HttpException("Invalid jwt token", HttpStatus.BAD_REQUEST);
+     const actualtoken = access_token.slice(7)
+     try {
+      const decoded = this.jwtService.verify(actualtoken);
+      return decoded;
+    } catch (error) {
+      // Handle token verification or decoding errors
+      throw new HttpException('Invalid token', HttpStatus.BAD_REQUEST);
     }
-    return user;
  }
-
-
     // validate email
     async getUserByEmail(email: string): Promise<Auth> {
-       return this.authrepository.findOne({ where:{email} });
+       return this.agentpository.findOne({ where:{email} });
      }
 }
