@@ -4,11 +4,11 @@ import { TravellerController } from './traveller.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Traveller } from './entities/traveller.entity';
 import { S3Module } from 'src/s3/s3.module';
-import { Auth } from 'src/auth/entities/auth.entity';
-import { AuthModule } from 'src/auth/auth.module';
+import { Agent } from 'src/auth/entities/auth.entity';
+import { AgentModule } from 'src/auth/auth.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Traveller,Auth]),S3Module, AuthModule],
+  imports:[TypeOrmModule.forFeature([Traveller,Agent]),S3Module, AgentModule],
   controllers: [TravellerController],
   providers: [TravellerService]
 })

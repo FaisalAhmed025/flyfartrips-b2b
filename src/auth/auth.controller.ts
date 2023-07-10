@@ -4,7 +4,7 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Auth } from './entities/auth.entity';
+import { Agent } from './entities/auth.entity';
 import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 import { GCSStorageService } from 'src/s3/s3.service';
@@ -15,7 +15,7 @@ import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestj
 @Controller('agent')
 export class AuthController {
   constructor(
-    @InjectRepository(Auth) private authrepository: Repository<Auth>,
+    @InjectRepository(Agent) private authrepository: Repository<Agent>,
     private readonly agentService: agentService,
     private s3service: GCSStorageService,
     ) {}

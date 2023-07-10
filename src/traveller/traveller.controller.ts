@@ -10,7 +10,7 @@ import { ApiBody } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { GCSStorageService } from 'src/s3/s3.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Auth } from 'src/auth/entities/auth.entity';
+import { Agent } from 'src/auth/entities/auth.entity';
 import { Repository } from 'typeorm';
 import { Traveller } from './entities/traveller.entity';
 
@@ -20,7 +20,7 @@ import { Traveller } from './entities/traveller.entity';
 @Controller('traveller')
 export class TravellerController {
   constructor(
-    @InjectRepository(Auth) private agentpository: Repository<Auth>,
+    @InjectRepository(Agent) private agentpository: Repository<Agent>,
     @InjectRepository(Traveller) private travllerRepository:Repository<Traveller>,
     private readonly travellerService: TravellerService,
     private s3service: GCSStorageService,

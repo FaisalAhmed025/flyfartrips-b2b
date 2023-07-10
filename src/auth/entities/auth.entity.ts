@@ -6,7 +6,7 @@ const maxValue = 10000;
 
 
 @Entity()
-export class Auth {
+export class Agent {
    @PrimaryGeneratedColumn()
    id:number
    @Column({type: "varchar"})

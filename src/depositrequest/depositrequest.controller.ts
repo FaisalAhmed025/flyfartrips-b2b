@@ -8,7 +8,7 @@ import { agentService } from 'src/auth/auth.service';
 import { GCSStorageService } from 'src/s3/s3.service';
 import { Request, Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Auth } from 'src/auth/entities/auth.entity';
+import { Agent } from 'src/auth/entities/auth.entity';
 import { Repository } from 'typeorm';
 import { Bankdeposit, PaymentStatus } from './entities/bankdeposit.entity';
 
@@ -16,7 +16,7 @@ import { Bankdeposit, PaymentStatus } from './entities/bankdeposit.entity';
 @Controller('depositrequest')
 export class DepositrequestController {
   constructor(
-    @InjectRepository(Auth) private agentrepository: Repository<Auth>,
+    @InjectRepository(Agent) private agentrepository: Repository<Agent>,
     @InjectRepository(Bankdeposit) private bankdepositrepository: Repository<Bankdeposit>,
     private readonly depositrequestService: DepositrequestService,
     private s3service: GCSStorageService,

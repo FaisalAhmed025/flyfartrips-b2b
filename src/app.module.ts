@@ -4,8 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import 'dotenv/config'
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { Auth } from './auth/entities/auth.entity';
+import { AgentModule } from './auth/auth.module';
+import { Agent } from './auth/entities/auth.entity';
 import { DepositrequestModule } from './depositrequest/depositrequest.module';
 import { Bankdeposit } from './depositrequest/entities/bankdeposit.entity';
 import { TravellerModule } from './traveller/traveller.module';
@@ -28,13 +28,13 @@ import { Traveller } from './traveller/entities/traveller.entity';
       database:'flyfartrips_b2b',
       port:3306,
       entities:[
-        Auth,
+        Agent,
         Bankdeposit,
         Traveller,
       ],
-      synchronize:true,
+      synchronize:false,
     }),
-    AuthModule,
+    AgentModule,
     DepositrequestModule,
     TravellerModule,
   ],

@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { agentService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Auth } from './entities/auth.entity';
+import { Agent } from './entities/auth.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { jwtConstants } from './constant';
@@ -13,7 +13,7 @@ dotenv.config();
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Auth]),S3Module,
+    TypeOrmModule.forFeature([Agent]),S3Module,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions:{expiresIn:'1d'},
@@ -23,5 +23,5 @@ dotenv.config();
   providers: [agentService],
   exports:[agentService]
 })
-export class AuthModule {}
+export class AgentModule {}
 
