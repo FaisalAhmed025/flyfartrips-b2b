@@ -11,7 +11,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Injectable()
-export class AuthService {
+export class agentService {
   constructor(@InjectRepository(Auth) private agentpository: Repository<Auth>,
   private readonly jwtService:JwtService){}
   // Register user

@@ -1,4 +1,4 @@
-import { AuthService } from 'src/auth/auth.service';
+import { agentService } from 'src/auth/auth.service';
 import { CreateAuthDto } from './../auth/dto/create-auth.dto';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Req, Res, HttpStatus, HttpException } from '@nestjs/common';
 import { TravellerService } from './traveller.service';
@@ -24,7 +24,7 @@ export class TravellerController {
     @InjectRepository(Traveller) private travllerRepository:Repository<Traveller>,
     private readonly travellerService: TravellerService,
     private s3service: GCSStorageService,
-    private readonly authService: AuthService,
+    private readonly agentService: agentService,
     ) {}
 
   @ApiBearerAuth()
@@ -63,7 +63,7 @@ export class TravellerController {
   @Res() res: Response,
   @Body() createTravellerDto: CreateTravellerDto) {
     const token = req.headers['authorization']
-    await this.authService.verifyToken(token)
+    await this.agentService.verifyToken(token)
     const agent = await this.agentpository.findOne({where:{agentid:agentid}})
     if (!agent) {
       throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
@@ -150,7 +150,7 @@ async updateTraveller(
   @Body() updateTravellerDto: UpdateTravellerDto
 ) {
   const token = req.headers['authorization']
-  await this.authService.verifyToken(token)
+  await this.agentService.verifyToken(token)
   const agent = await this.agentpository.findOne({ where:{agentid}});
   if (!agent) {
     throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
@@ -224,9 +224,8 @@ async updateTraveller(
   @Res() res: Response,
   @Req() req: Request,
   @Param('travellerid') travellerid: string,) {
-
     const token = req.headers['authorization']
-    await this.authService.verifyToken(token)
+    await this.agentService.verifyToken(token)
     await this.travellerService.remove(travellerid)
     return res.status(HttpStatus.OK).json({
       status: 'success',

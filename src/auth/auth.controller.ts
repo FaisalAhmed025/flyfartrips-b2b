@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, HttpException, HttpStatus, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { agentService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -16,7 +16,7 @@ import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestj
 export class AuthController {
   constructor(
     @InjectRepository(Auth) private authrepository: Repository<Auth>,
-    private readonly authService: AuthService,
+    private readonly agentService: agentService,
     private s3service: GCSStorageService,
     ) {}
 
@@ -48,7 +48,7 @@ export class AuthController {
     @Res() res: Response,
     @Body() authdto:CreateAuthDto
   ) {
-    const ExistUser = await this.authService.getUserByEmail(authdto.email);
+    const ExistUser = await this.agentService.getUserByEmail(authdto.email);
     if (ExistUser) {
       throw new HttpException(
         'User Already Exist,please try again with another email',
@@ -60,7 +60,7 @@ export class AuthController {
       tinFile = await this.s3service.Addimage(file.tinFile[0]);
       authdto.tinFile =tinFile;
     }
-    await this.authService.Register(authdto);
+    await this.agentService.Register(authdto);
     return res
       .status(HttpStatus.CREATED)
       .json({ status: 'success', message: 'agent registration successful'});
@@ -84,7 +84,7 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response,
   ) {
-    const token = await this.authService.login(Email, Password);
+    const token = await this.agentService.login(Email, Password);
     return res.status(HttpStatus.CREATED).json({
       status: 'success',
       message: 'login successfull',
@@ -96,7 +96,7 @@ export class AuthController {
   @Post('verify')
   async verify(@Req() req: Request){
     const jwt_Token = req.headers['authorization'];
-    return await this.authService.verifyToken(jwt_Token)
+    return await this.agentService.verifyToken(jwt_Token)
   }
 
 

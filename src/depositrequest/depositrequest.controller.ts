@@ -4,7 +4,7 @@ import { CreateDepositrequestDto } from './dto/create-depositrequest.dto';
 import { UpdateDepositrequestDto } from './dto/update-depositrequest.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { AuthService } from 'src/auth/auth.service';
+import { agentService } from 'src/auth/auth.service';
 import { GCSStorageService } from 'src/s3/s3.service';
 import { Request, Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,7 +20,7 @@ export class DepositrequestController {
     @InjectRepository(Bankdeposit) private bankdepositrepository: Repository<Bankdeposit>,
     private readonly depositrequestService: DepositrequestService,
     private s3service: GCSStorageService,
-    private readonly authService: AuthService,
+    private readonly agentService: agentService,
     ) {}
 
   @ApiBearerAuth()
@@ -63,7 +63,7 @@ export class DepositrequestController {
     @Body() depositrequestdto:CreateDepositrequestDto
 ) {
   const jwttoken = req.headers['authorization'];
- await this.authService.verifyToken(jwttoken)
+ await this.agentService.verifyToken(jwttoken)
   const agent = await this.agentrepository.findOne({where:{agentid}})
   if(!agent){
     throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
