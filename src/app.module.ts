@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { Auth } from './auth/entities/auth.entity';
 import { DepositrequestModule } from './depositrequest/depositrequest.module';
 import { Bankdeposit } from './depositrequest/entities/bankdeposit.entity';
+import { TravellerModule } from './traveller/traveller.module';
+import { Traveller } from './traveller/entities/traveller.entity';
 
 
 @Module({
@@ -24,16 +26,17 @@ import { Bankdeposit } from './depositrequest/entities/bankdeposit.entity';
       password:'',
       host: '127.0.0.1',
       database:'flyfartrips_b2b',
-      
       port:3306,
       entities:[
         Auth,
-        Bankdeposit
+        Bankdeposit,
+        Traveller,
       ],
       synchronize:true,
     }),
     AuthModule,
     DepositrequestModule,
+    TravellerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -49,4 +49,8 @@ export class Auth {
    browserName: string;
    @Column()
    activeStatus: boolean;
+   @Column({ default: 0 })
+   loginAttempts: number;
+   @Column({ default: false })
+   isLocked: boolean;
 }

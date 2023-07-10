@@ -519,20 +519,32 @@ export class AuthService {
  if (!user) {
     throw new HttpException("User does not exists", HttpStatus.BAD_REQUEST,);
  }
+
+ if (user.isLocked) {
+  throw new HttpException("your account is locked", HttpStatus.BAD_REQUEST);
+}
  const isMatch = await bcrypt.compare(password, user.password);
  if (!isMatch) {
+  user.loginAttempts = user.loginAttempts + 1;
+  await this.agentpository.save(user);
+
+  if (user.loginAttempts >= 3) {
+    user.isLocked = true;
+    await this.agentpository.save(user);
+    throw new HttpException("Account locked due to multiple failed login attempts", HttpStatus.BAD_REQUEST);
+  }
  throw new HttpException("password is not correct", HttpStatus.BAD_REQUEST,);
  }
+ user.loginAttempts = 0;
+ await this.agentpository.save(user);
  return this.generateToken(user);
- 
 }
 
- 
 
  //verified token
  async verifyToken(access_token?: string): Promise<any> {
     if (!access_token) {
-       throw new HttpException('JWT token is required', HttpStatus.BAD_REQUEST);
+       throw new HttpException('access token is required', HttpStatus.BAD_REQUEST);
      }
      const actualtoken = access_token.slice(7)
      try {
