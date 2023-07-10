@@ -1,9 +1,9 @@
 
 import { Module } from '@nestjs/common';
-import { agentService } from './auth.service';
-import { AuthController } from './auth.controller';
+import { agentService } from './agent.service';
+import { AuthController } from './agent.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Agent } from './entities/auth.entity';
+import { Agent } from './entities/agent.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { jwtConstants } from './constant';

@@ -1,5 +1,4 @@
-import { agentService } from 'src/auth/auth.service';
-import { CreateAuthDto } from './../auth/dto/create-auth.dto';
+
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Req, Res, HttpStatus, HttpException } from '@nestjs/common';
 import { TravellerService } from './traveller.service';
 import { CreateTravellerDto } from './dto/create-traveller.dto';
@@ -10,9 +9,11 @@ import { ApiBody } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { GCSStorageService } from 'src/s3/s3.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Agent } from 'src/auth/entities/auth.entity';
+
 import { Repository } from 'typeorm';
 import { Traveller } from './entities/traveller.entity';
+import { Agent } from 'src/agent/entities/agent.entity';
+import { agentService } from 'src/agent/agent.service';
 
 
 

@@ -4,13 +4,15 @@ import { CreateDepositrequestDto } from './dto/create-depositrequest.dto';
 import { UpdateDepositrequestDto } from './dto/update-depositrequest.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { agentService } from 'src/auth/auth.service';
+
 import { GCSStorageService } from 'src/s3/s3.service';
 import { Request, Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Agent } from 'src/auth/entities/auth.entity';
+
 import { Repository } from 'typeorm';
 import { Bankdeposit, PaymentStatus } from './entities/bankdeposit.entity';
+import { Agent } from 'src/agent/entities/agent.entity';
+import { agentService } from 'src/agent/agent.service';
 
 @ApiTags('Bankdeposit Module')
 @Controller('depositrequest')
@@ -20,7 +22,7 @@ export class DepositrequestController {
     @InjectRepository(Bankdeposit) private bankdepositrepository: Repository<Bankdeposit>,
     private readonly depositrequestService: DepositrequestService,
     private s3service: GCSStorageService,
-    private readonly agentService: agentService,
+    private readonly agentService: agentService
     ) {}
 
   @ApiBearerAuth()
@@ -161,15 +163,5 @@ return res
   @Get(':depositid')
   findOne(@Param('depositid') depositid: string) {
     return this.depositrequestService.findOne(depositid);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDepositrequestDto: UpdateDepositrequestDto) {
-    return this.depositrequestService.update(+id, updateDepositrequestDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.depositrequestService.remove(+id);
   }
 }

@@ -4,12 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import 'dotenv/config'
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AgentModule } from './auth/auth.module';
-import { Agent } from './auth/entities/auth.entity';
+
 import { DepositrequestModule } from './depositrequest/depositrequest.module';
 import { Bankdeposit } from './depositrequest/entities/bankdeposit.entity';
 import { TravellerModule } from './traveller/traveller.module';
 import { Traveller } from './traveller/entities/traveller.entity';
+import { AgentModule } from './agent/agent.module';
+import { Agent } from './agent/entities/agent.entity';
 
 
 @Module({
@@ -32,7 +33,7 @@ import { Traveller } from './traveller/entities/traveller.entity';
         Bankdeposit,
         Traveller,
       ],
-      synchronize:false,
+      synchronize:true,
     }),
     AgentModule,
     DepositrequestModule,

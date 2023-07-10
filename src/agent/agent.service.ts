@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, UploadedFiles } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Agent } from './entities/auth.entity';
+import { Agent } from './entities/agent.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';

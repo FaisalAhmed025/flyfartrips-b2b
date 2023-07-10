@@ -1,4 +1,7 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { IsEmail } from "class-validator"
+
+
 
 const crypto = require('crypto');
 const secretKey = 'my-secret-key';
@@ -27,14 +30,13 @@ export class Agent {
    companyName:string
    @Column({type: "varchar"})
    companyAddress:string
+   @IsEmail({}, { message: 'Incorrect email' })
    @Column({type: "varchar"})
    email:string
    @Column({type: "varchar"})
    password:string
    @Column({type: "varchar"})
    walletbalance:number
-   @Column({type: "varchar"})
-   tinFile:string
    @Column({type: "varchar"})
    access_token:string
    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
@@ -53,4 +55,17 @@ export class Agent {
    loginAttempts: number;
    @Column({ default: false })
    isLocked: boolean;
+   @Column({type: "varchar"})
+   nidcopy:string
+   @Column({type: "varchar"})
+   tradelicensecopy:string
+   @Column({type: "varchar"})
+   toabcertificationcopy:string
+   @Column({type: "varchar"})
+   atabcertificationcopy:string
+   @Column({type: "varchar"})
+   tinFile:string
+   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+   join_At: Date;
+
 }

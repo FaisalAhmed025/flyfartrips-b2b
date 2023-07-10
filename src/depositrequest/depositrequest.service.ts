@@ -12,7 +12,7 @@ export class DepositrequestService {
 
 
   async createdepositrequest(createDepositrequestDto: CreateDepositrequestDto) {
-   const deposit =  await this.bankdepositrepository.create(createDepositrequestDto)
+   const deposit = await this.bankdepositrepository.create(createDepositrequestDto)
    await this.bankdepositrepository.save(deposit)
   }
 
@@ -28,11 +28,4 @@ export class DepositrequestService {
     return deposited;
   }
 
-  update(id: number, updateDepositrequestDto: UpdateDepositrequestDto) {
-    return `This action updates a #${id} depositrequest`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} depositrequest`;
-  }
 }
