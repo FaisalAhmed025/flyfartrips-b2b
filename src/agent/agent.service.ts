@@ -528,7 +528,7 @@ export class agentService {
   user.loginAttempts = user.loginAttempts + 1;
   await this.agentpository.save(user);
 
-  if (user.loginAttempts >= 3) {
+  if (user.loginAttempts >= 5) {
     user.isLocked = true;
     await this.agentpository.save(user);
     throw new HttpException("Account locked due to multiple failed login attempts", HttpStatus.BAD_REQUEST);

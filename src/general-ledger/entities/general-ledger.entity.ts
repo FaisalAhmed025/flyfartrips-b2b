@@ -1,4 +1,3 @@
-import { type } from "os";
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
@@ -8,24 +7,21 @@ export enum PaymentStatus {
    REJECTED = 'REJECTED',
  }
 
-let userCount =0
+
 @Entity()
-export class Bankdeposit{
+export class GeneralLedger {
    @PrimaryGeneratedColumn()
    id:number
-   @Column({type:'varchar'})
-   depositid: string;
-   @BeforeInsert()
-   generateUserId() {
-    userCount++;
-    this.depositid = `FFD${100 + userCount}`;
- }
    @Column()
    agentid: string;
+   @Column()
+   depositid: string;
    @Column()
    depositmethod:string
    @Column()
    sender:string
+   @Column()
+   lastBalance:string
    @Column()
    reciever:string
    @Column()
@@ -56,8 +52,8 @@ export class Bankdeposit{
    attachment:string
    @Column({type:'integer'})
    amount:number
-   @CreateDateColumn()
+   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
    createdAt:Date
-   @UpdateDateColumn()
+   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
    updatedAt:Date
 }

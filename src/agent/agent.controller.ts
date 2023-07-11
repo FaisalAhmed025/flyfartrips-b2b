@@ -80,12 +80,12 @@ export class AuthController {
   })
   
   async login(
-    @Body('email') Email: string,
-    @Body('password') Password: string,
+    @Body('email') email: string,
+    @Body('password') password: string,
     @Req() req: Request,
     @Res() res: Response,
   ) {
-    const token = await this.agentService.login(Email, Password);
+    const token = await this.agentService.login(email, password);
     return res.status(HttpStatus.CREATED).json({
       status: 'success',
       message: 'login successfull',
@@ -101,7 +101,8 @@ export class AuthController {
   }
 
 
-  @Patch('update/:agentid')
+  @ApiBearerAuth()
+  @Patch('update')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'tinFile', maxCount: 2 },
     { name: 'atabcertificationcopy', maxCount: 2 },
@@ -136,11 +137,11 @@ export class AuthController {
     },
   @Req() req: Request,
   @Res() res: Response,
-  @Param('agentid') agentid: string,
   @Body() updateagentDTO:UpdateAuthDto
 ) {
   const jwt_Token = req.headers['authorization'];
-  await this.agentService.verifyToken(jwt_Token)
+  const decodedtoken =  await this.agentService.verifyToken(jwt_Token)
+  const agentid =decodedtoken.agentid
   const agent = await this.agentpository.findOne({where:{agentid}})
   if (!agent) {
     throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
@@ -205,12 +206,14 @@ async allagent(){
   return allagent;
 }
 
-@Delete('delete/:agentid')
-async delteagent(  @Req() req: Request,
+@ApiBearerAuth()
+@Delete('delete')
+async deleteAgent(  @Req() req: Request,
 @Res() res: Response,
-@Param('agentid') agentid: string){
+){
   const jwt_Token = req.headers['authorization'];
-  await this.agentService.verifyToken(jwt_Token)
+  const decodedToken= await this.agentService.verifyToken(jwt_Token)
+  const agentid = decodedToken.agentid;
   await this.agentpository.delete({agentid})
     return res
     .status(HttpStatus.CREATED)

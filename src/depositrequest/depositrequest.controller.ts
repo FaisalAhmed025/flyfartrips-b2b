@@ -13,20 +13,22 @@ import { Repository } from 'typeorm';
 import { Bankdeposit, PaymentStatus } from './entities/bankdeposit.entity';
 import { Agent } from 'src/agent/entities/agent.entity';
 import { agentService } from 'src/agent/agent.service';
+import { GeneralLedger } from 'src/general-ledger/entities/general-ledger.entity';
 
 @ApiTags('Bankdeposit Module')
 @Controller('depositrequest')
-export class DepositrequestController {
+export class DepositrequestController {GeneralLedger
   constructor(
     @InjectRepository(Agent) private agentrepository: Repository<Agent>,
     @InjectRepository(Bankdeposit) private bankdepositrepository: Repository<Bankdeposit>,
+    @InjectRepository(GeneralLedger) private GeneralLedgerpository: Repository<GeneralLedger>,
     private readonly depositrequestService: DepositrequestService,
     private s3service: GCSStorageService,
     private readonly agentService: agentService
     ) {}
 
   @ApiBearerAuth()
-  @Post('create/:agentid')
+  @Post('create')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'attachment', maxCount: 2 }
   ]))
@@ -59,13 +61,14 @@ export class DepositrequestController {
     file: {
       attachment?: Express.Multer.File[]
     },
-    @Param('agentid') agentid:string,
+  
     @Req() req: Request,
     @Res() res: Response,
     @Body() depositrequestdto:CreateDepositrequestDto
 ) {
   const jwttoken = req.headers['authorization'];
- await this.agentService.verifyToken(jwttoken)
+  const decodedtoken = await this.agentService.verifyToken(jwttoken)
+  const agentid =decodedtoken.agentid
   const agent = await this.agentrepository.findOne({where:{agentid}})
   if(!agent){
     throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
@@ -74,8 +77,8 @@ export class DepositrequestController {
   if (file.attachment && file.attachment.length > 0) {
     attachment = await this.s3service.Addimage(file.attachment[0]);
     depositrequestdto.attachment =attachment;
-    depositrequestdto.agentid =agentid;
   }
+  depositrequestdto.agentid =agentid;
   await this.depositrequestService.createdepositrequest(depositrequestdto);
   return res
     .status(HttpStatus.CREATED)
@@ -83,7 +86,7 @@ export class DepositrequestController {
 }
 
 
-@Patch('approve/:agentid')
+@Patch('approve')
 @ApiBody({
   schema: {
     type: 'object',
@@ -107,13 +110,14 @@ async ApprovedDeposit(
   if(!deposit){
     throw new HttpException('deposit not found', HttpStatus.NOT_FOUND)
   }
-if(deposit.status !=PaymentStatus.PENDING){
-  throw new HttpException('Deposit request already approved or rejected', HttpStatus.BAD_REQUEST)
-}
+// if(deposit.status !=PaymentStatus.PENDING){
+//   throw new HttpException('Deposit request already approved or rejected', HttpStatus.BAD_REQUEST)
+// }
 deposit.status =PaymentStatus.APPROVED
 await this.bankdepositrepository.save(deposit)
-agent.walletbalance =deposit.amount
+await this.GeneralLedgerpository.save(deposit)
 await this.agentrepository.save(agent)
+await this.GeneralLedgerpository.save(agent)
 return res
   .status(HttpStatus.CREATED)
   .json({ status: 'success', message: 'amount approved'});

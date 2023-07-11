@@ -11,6 +11,10 @@ import { TravellerModule } from './traveller/traveller.module';
 import { Traveller } from './traveller/entities/traveller.entity';
 import { AgentModule } from './agent/agent.module';
 import { Agent } from './agent/entities/agent.entity';
+import { MystaffModule } from './mystaff/mystaff.module';
+import { Staff } from './mystaff/entities/mystaff.entity';
+import { GeneralLedgerModule } from './general-ledger/general-ledger.module';
+import { GeneralLedger } from './general-ledger/entities/general-ledger.entity';
 
 
 @Module({
@@ -32,12 +36,16 @@ import { Agent } from './agent/entities/agent.entity';
         Agent,
         Bankdeposit,
         Traveller,
+        Staff,
+        GeneralLedger
       ],
       synchronize:true,
     }),
     AgentModule,
     DepositrequestModule,
     TravellerModule,
+    MystaffModule,
+    GeneralLedgerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

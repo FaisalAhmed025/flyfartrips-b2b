@@ -29,7 +29,7 @@ export class TravellerController {
     ) {}
 
   @ApiBearerAuth()
-  @Post('add/:agentid')
+  @Post('add')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'passportPhoto', maxCount: 2 },
     { name: 'visaCopy', maxCount: 2 }
@@ -59,12 +59,12 @@ export class TravellerController {
     passportPhoto?: Express.Multer.File[],
     visaCopy?: Express.Multer.File[]
   },
-  @Param('agentid') agentid:string,
   @Req() req: Request,
   @Res() res: Response,
   @Body() createTravellerDto: CreateTravellerDto) {
     const token = req.headers['authorization']
-    await this.agentService.verifyToken(token)
+    const decodedToken = await this.agentService.verifyToken(token)
+    const agentid = decodedToken.agentid;
     const agent = await this.agentpository.findOne({where:{agentid:agentid}})
     if (!agent) {
       throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
@@ -87,9 +87,15 @@ export class TravellerController {
     .json({ status: 'success', message: 'traveller addd successful'});
 
   }
-
-  @Get('/agent/travellerlist/:agentid')
-  async findAll(@Param('agentid') agentid:string) {
+   
+  @ApiBearerAuth()
+  @Get('/agent/travellerlist')
+  async findAll(
+    @Req() req:Request
+  ) {
+    const token = req.headers['authorization']
+    const decodedToken = await this.agentService.verifyToken(token)
+    const agentid = decodedToken.agentid;
     const agent = await this.agentpository.findOne({ where:{agentid}});
     if (!agent) {
       throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
@@ -113,7 +119,7 @@ export class TravellerController {
 
 
   @ApiBearerAuth()
-  @Patch('update/:agentid')
+  @Patch('update')
 @UseInterceptors(FileFieldsInterceptor([
   { name: 'passportPhoto', maxCount: 2 },
   { name: 'visaCopy', maxCount: 2 }
@@ -145,13 +151,13 @@ async updateTraveller(
     visaCopy?: Express.Multer.File[]
   },
   @Body('travellerid') travellerid: string,
-  @Param('agentid') agentid: string,
   @Req() req: Request,
   @Res() res: Response,
   @Body() updateTravellerDto: UpdateTravellerDto
 ) {
   const token = req.headers['authorization']
-  await this.agentService.verifyToken(token)
+  const decodedToken = await this.agentService.verifyToken(token)
+  const agentid = decodedToken.agentid;
   const agent = await this.agentpository.findOne({ where:{agentid}});
   if (!agent) {
     throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
