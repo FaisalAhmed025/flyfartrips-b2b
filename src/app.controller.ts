@@ -10,4 +10,8 @@ export class AppController {
   redirectToDestination(@Res() res: Response) {
     return res.redirect('/api');
   }
+  @Get('hello')
+  redirectToDestinatios(@Res() res: Response) {
+    return res.redirect('/api');
+  }
 }

@@ -15,6 +15,7 @@ import { MystaffModule } from './mystaff/mystaff.module';
 import { Staff } from './mystaff/entities/mystaff.entity';
 import { GeneralLedgerModule } from './general-ledger/general-ledger.module';
 import { GeneralLedger } from './general-ledger/entities/general-ledger.entity';
+import { NagadModule } from './nagad/nagad.module';
 
 
 @Module({
@@ -46,6 +47,7 @@ import { GeneralLedger } from './general-ledger/entities/general-ledger.entity';
     TravellerModule,
     MystaffModule,
     GeneralLedgerModule,
+    NagadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
