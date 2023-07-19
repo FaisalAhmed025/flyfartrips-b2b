@@ -8,7 +8,7 @@ export enum PaymentStatus {
    REJECTED = 'REJECTED',
  }
 
-let userCount =0
+ let depositIdCounter = 100;
 @Entity()
 export class Bankdeposit{
    @PrimaryGeneratedColumn()
@@ -17,8 +17,8 @@ export class Bankdeposit{
    depositid: string;
    @BeforeInsert()
    generateUserId() {
-    userCount++;
-    this.depositid = `FFD${100 + userCount}`;
+      depositIdCounter++;
+    this.depositid = `FFD${depositIdCounter}`;
  }
    @Column()
    agentid: string;
@@ -44,7 +44,7 @@ export class Bankdeposit{
    actionby:string
    @Column({type:'varchar'})
    rejectionreason:string
-   @Column({type:'date',default:null})
+   @Column({type:'date'})
    chequeissuedate:Date
    @Column({ type: 'enum', enum: PaymentStatus, default: PaymentStatus.PENDING })
    status: PaymentStatus;

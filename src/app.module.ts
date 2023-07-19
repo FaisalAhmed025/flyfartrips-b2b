@@ -41,7 +41,7 @@ import { AmarpayModule } from './amarpay/amarpay.module';
         Staff,
         GeneralLedger
       ],
-      synchronize:false,
+      synchronize:true,
     }),
     AgentModule,
     DepositrequestModule,

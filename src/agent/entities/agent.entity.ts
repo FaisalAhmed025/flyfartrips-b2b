@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const secretKey = 'my-secret-key';
 const maxValue = 10000;
 
-let userCount = 0
+let userCount = 100
 @Entity()
 export class Agent {
    @PrimaryGeneratedColumn()
@@ -15,7 +15,7 @@ export class Agent {
    @BeforeInsert()
    generateUserId() {
     userCount++;
-    this.agentid = `FFA${100 + userCount}`;
+    this.agentid = `FFA${userCount}`;
  }
    @Column({type: "varchar"})
    firstName:string
