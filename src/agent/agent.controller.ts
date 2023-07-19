@@ -75,7 +75,6 @@ export class AuthController {
         email: { type: 'string', format: 'email' },
         password: { type: 'string' },
       },
-      required: ['email', 'password'],
     },
   })
   

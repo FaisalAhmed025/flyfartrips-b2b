@@ -16,6 +16,7 @@ import { Staff } from './mystaff/entities/mystaff.entity';
 import { GeneralLedgerModule } from './general-ledger/general-ledger.module';
 import { GeneralLedger } from './general-ledger/entities/general-ledger.entity';
 import { NagadModule } from './nagad/nagad.module';
+import { AmarpayModule } from './amarpay/amarpay.module';
 
 
 @Module({
@@ -40,7 +41,7 @@ import { NagadModule } from './nagad/nagad.module';
         Staff,
         GeneralLedger
       ],
-      synchronize:true,
+      synchronize:false,
     }),
     AgentModule,
     DepositrequestModule,
@@ -48,6 +49,7 @@ import { NagadModule } from './nagad/nagad.module';
     MystaffModule,
     GeneralLedgerModule,
     NagadModule,
+    AmarpayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

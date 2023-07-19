@@ -44,7 +44,7 @@ export class Bankdeposit{
    actionby:string
    @Column({type:'varchar'})
    rejectionreason:string
-   @Column({type:'date'})
+   @Column({type:'date',default:null})
    chequeissuedate:Date
    @Column({ type: 'enum', enum: PaymentStatus, default: PaymentStatus.PENDING })
    status: PaymentStatus;
