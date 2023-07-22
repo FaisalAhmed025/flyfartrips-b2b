@@ -15,8 +15,9 @@ import { MystaffModule } from './mystaff/mystaff.module';
 import { Staff } from './mystaff/entities/mystaff.entity';
 import { GeneralLedgerModule } from './general-ledger/general-ledger.module';
 import { GeneralLedger } from './general-ledger/entities/general-ledger.entity';
-import { NagadModule } from './nagad/nagad.module';
 import { AmarpayModule } from './amarpay/amarpay.module';
+import { BkashModule } from './bkash/bkash.module';
+import { NagadModule } from './nagad/nagad.module';
 
 
 @Module({
@@ -48,8 +49,9 @@ import { AmarpayModule } from './amarpay/amarpay.module';
     TravellerModule,
     MystaffModule,
     GeneralLedgerModule,
-    NagadModule,
     AmarpayModule,
+    BkashModule,
+    NagadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

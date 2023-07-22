@@ -84,7 +84,6 @@ export class DepositrequestController {
       type: 'json',
     };
 
-
     const deposit = new Bankdeposit()
     deposit.status  = PaymentStatus.PENDING
     deposit.amount =amount;
@@ -117,8 +116,6 @@ export class DepositrequestController {
       });
     }
   }
-
-
   
   @Post('amarpay/callback/:transactionid')
  async  Confirmtransaction(
@@ -138,7 +135,7 @@ export class DepositrequestController {
     await this.GeneralLedgerpository.save(deposit)
     const status = "success";
     const message = "payment successfull"
-    return res.redirect(`https://flyfarladies.com/?message=${encodeURIComponent(message)}&status=${encodeURIComponent(status)}`)
+    return res.redirect(`https://www.flyfartrips.com/?message=${encodeURIComponent(message)}&status=${encodeURIComponent(status)}`)
   }
   @ApiBearerAuth()
   @Post('create')

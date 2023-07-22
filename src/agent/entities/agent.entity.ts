@@ -1,9 +1,6 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, getRepository } from "typeorm";
 import { IsEmail } from "class-validator"
 
-const crypto = require('crypto');
-const secretKey = 'my-secret-key';
-const maxValue = 10000;
 
 let userCount = 100
 @Entity()
