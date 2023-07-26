@@ -53,7 +53,7 @@
     "mysql2": "^3.2.0",
     "nagad-payment-gateway": "^2.0.2",
     "nestjs-sharp": "^1.1.0",
-    "node-fetch": "^3.3.1",
+    "node-fetch": "^2.6.12",
     "npm-install-global": "^1.0.0",
     "number-to-words": "^1.2.4",
     "ormconfig.json": "^1.0.2",
