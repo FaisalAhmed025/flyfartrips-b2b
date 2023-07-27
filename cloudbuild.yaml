@@ -1,50 +1,9 @@
 steps:
-  # Step 1: Install dependencies and build your application (e.g., npm, yarn, etc.).
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['install']  # You can replace 'npm' with your preferred package manager.
+    args: ['install']
 
-  # Step 2: Build your application (e.g., npm run build).
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['run', 'build']  # Replace 'build' with the build script for your app.
-
-  # Step 3: Deploy each version of the application using the 'gcloud app deploy' command.
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'app'
-      - 'deploy'
-      - 'app.yaml'  # Replace 'app.yaml' with your app's deployment configuration file.
-      - '--version'
-      - 'v1'  # Replace 'v1' with the desired version for deployment.
+    args: ['run', 'build']
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'app'
-      - 'deploy'
-      - 'app.yaml'  # Replace 'app.yaml' with your app's deployment configuration file.
-      - '--version'
-      - 'v2'  # Replace 'v2' with the desired version for deployment.
-
-  # Add more deployment steps for other versions as needed.
-  # - name: 'gcr.io/cloud-builders/gcloud'
-  #   args:
-  #     - 'app'
-  #     - 'deploy'
-  #     - 'app.yaml'
-  #     - '--version'
-  #     - 'v3'
-
-# Optionally, you can include additional steps for testing, linting, etc., as needed.
-# - name: 'gcr.io/cloud-builders/npm'
-#   args: ['test']
-
-# - name: 'gcr.io/cloud-builders/eslint'
-#   args: ['--fix']
-
-# - name: 'gcr.io/cloud-builders/npm'
-#   args: ['run', 'lint']
-
-# - name: 'gcr.io/cloud-builders/npm'
-#   args: ['run', 'test']
-
-# Timeout for the entire build in seconds (optional).
-timeout: '1200s'
+    args: ['app', 'deploy']
