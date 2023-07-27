@@ -7,7 +7,7 @@ const { NagadGateway } = require('nagad-payment-gateway');
 export class NagadService {
   
   private readonly nagad;
-
+  
   constructor() {
     const config = {
       apiVersion: 'v-0.2.0',
