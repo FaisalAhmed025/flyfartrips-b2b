@@ -1,7 +1,7 @@
 
 
 import { NagadService } from './nagad.service';
-import { NagadController } from './nagad.controller';
+// import { NagadController } from './nagad.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
@@ -11,7 +11,7 @@ import { HttpModule } from '@nestjs/axios';
     HttpModule.register({
     }),
   ],
-  controllers: [NagadController],
+  controllers: [],
   providers: [NagadService],
  
 })
