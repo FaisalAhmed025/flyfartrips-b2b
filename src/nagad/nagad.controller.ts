@@ -65,28 +65,28 @@ export class NagadController {
     // }
   }
 
-  @Get('make-payment')
-  async makePayment(@Res() res) {
-    try {
-      const paymentData = {
-        amount: '100',
-        ip: ' 192.168.1.108',
-        orderId: `${Date.now()}`,
-        productDetails: { a: '1', b: '2' },
-        clientType: 'PC_WEB',
-      };
+  // @Get('make-payment')
+  // async makePayment(@Res() res) {
+  //   try {
+  //     const paymentData = {
+  //       amount: '100',
+  //       ip: ' 192.168.1.108',
+  //       orderId: `${Date.now()}`,
+  //       productDetails: { a: '1', b: '2' },
+  //       clientType: 'PC_WEB',
+  //     };
 
-      const nagadURL = await this.nagadService.createPayment(paymentData);
-      console.log(nagadURL);
+  //     const nagadURL = await this.nagadService.createPayment(paymentData);
+  //     console.log(nagadURL);
       
-      // Redirect the user to the Nagad URL
-      return res.redirect(nagadURL);
-    } catch (err) {
-      // Handle any errors and send an error response to the user
-      console.log(err);
-      return res.status(500).json({ error: 'Something went wrong' });
-    }
-  }
+  //     // Redirect the user to the Nagad URL
+  //     return res.redirect(nagadURL);
+  //   } catch (err) {
+  //     // Handle any errors and send an error response to the user
+  //     console.log(err);
+  //     return res.status(500).json({ error: 'Something went wrong' });
+  //   }
+  // }
 
   generateCustomTransactionId(): string {
     const timestamp = Date.now().toString();
