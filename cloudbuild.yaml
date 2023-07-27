@@ -8,4 +8,4 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['app', 'deploy']
   - options:
-    logging: GCS_ONLY
+    defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
