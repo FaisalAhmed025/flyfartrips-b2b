@@ -1,8 +1,7 @@
-import { agent } from 'supertest';
+
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Req, Res, HttpStatus, HttpException } from '@nestjs/common';
 import { DepositrequestService } from './depositrequest.service';
 import { CreateDepositrequestDto } from './dto/create-depositrequest.dto';
-import { UpdateDepositrequestDto } from './dto/update-depositrequest.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -47,7 +46,6 @@ export class DepositrequestController {
       throw new HttpException('agent not found', HttpStatus.NOT_FOUND)
     }
 
-    
     const {
       cus_name,
       cus_email,

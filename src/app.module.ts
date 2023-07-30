@@ -42,7 +42,7 @@ import { NagadModule } from './nagad/nagad.module';
         Staff,
         GeneralLedger
       ],
-      synchronize:true,
+      synchronize:false,
     }),
     AgentModule,
     DepositrequestModule,
